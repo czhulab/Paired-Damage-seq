@@ -38,7 +38,7 @@ For additional resources, please refer to: [Additional resources.](#additional-r
   > - An updated GCC complier is also required. 
   </details>
 
-Compile reachtools for barcode extraction.
+**Compile reachtools for barcode extraction.**
 
 
 > [!IMPORTANT]
