@@ -97,7 +97,9 @@ fastqc Sample_1_R2.fq..gz
 
 During this step, the shell scripts will perform barcodes extraction, reads cleaning & mapping, PCR duplicates removal, and generating the cell-counts matrix with the environment prepared in [Preparation](#preparation) section.
 > [!IMPORTANT]
-> - Don't forget to update the your paths to ```fastq files```, ```barcode references```, ```preprocessing```, and ```reachtools``` in the "01.Preprocessing/per_run.sh" bash script.
+> - Don't forget to update the your paths to ```fastq files```, ```barcode references```, ```genome_reference``` ,```preprocessing```, ```reachtools``` folders, and ```gene_annotation``` file in the "01.Preprocessing/per_run.sh" bash script.
+> - Cell barcodes whitelist ```barcode references```, and ```gene_annotation``` for mm10 and hg38 are available in "resources" folder.
+
 
 ```bash
 # Run this for individual sub-library
@@ -112,7 +114,42 @@ During this step, the shell scripts will perform barcodes extraction, reads clea
 sh per_run.sh ${DNA_ID} ${RNA_ID}
 ```
 
+For batch job submission, we prepared a simple perl script (```01.Preprocessing/01.submit_run.pl```) and an example sample table (```sample_list.txt```). Please modify [this line](https://github.com/czhulab/Paired-Damage-seq/blob/9fec3da3f4a80261b2281da11c3e20b433a914ff/01.Preprocessing/01.submit_run.pl#L12) with your batch submission script.
 
+  <details>
+  <summary>The key output files after this step includes: </summary>
+
+   > - ```01.rawdata/*combined_DNA.fq.gz```: Extracted barcode reads with DNA restriction cutting sites, which are derived from PAT tagmentation.
+   > - ```01.rawdata/*combined_RNA.fq.gz```: Extracted barcode reads with RNA restriction cutting sites, which are derived from reverse transcription.
+   > - ```01.rawdata/*combined_UND.fq.gz```: Extracted barcode reads that cannot be assigned to DNA and RNA modalities, possible due to PCR/sequencing errors, and dimer fragments.
+   > - ```01.rawdata/*BC_cov.fq.gz```: Converted fastq files with barcode IDs attached to ReadName lines.
+   > - ```02.trimmed/*BC_cov_trimmed.fq.gz```: Cleaned reads that will be used for mapping. An additional optional QC can be performed on them.
+   > - ```03.mapping_mm10/*_mm10_sorted.bam```: Mapped DNA and RNA bam files, before PCR duplicates removal.
+   > - ```03.mapping_mm10/*_mm10_sorted_rmdup.bam```: Mapped DNA and RNA bam files, after PCR duplicates removal.
+   > - ```04.*mtx2/```: Cell-counts matrix for individual sub-libraries, in 10X format.
+    
+  </details>
+
+**Step 3.**  Pre-filtering, and merging matrices for sub-libraries.
+
+In Paired-Damage-seq, we will aliquote the barcoded nuclei into sub-libraries containing 2-10k cells for library preparation and sequencing. THe best approach is to QC & filtering sub-library pairs individually, and then merge them for downstream analyses.
+- The matrices files are in standard 10X format, you can use your own scripts to perform this task..
+- This task can also be done with our previous [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master?tab=readme-ov-file#3-merge-sub-libraries-for-downstream-analysis) scripts.
+
+> [!CAUTION]
+> - When merging sub-libraries, always use unique prefix for each DNA-RNA library pairs.
+>    - The cells in different sub-libraries may have the same barcodes combinations.
+>   - The PCR index will be used as the 4th barcode combination to give sufficient #s of barcodes.
+
+
+**Step 4.**  Downstreame analyses.
+We recommend to perform cell clustering on transcriptome profiles of Paired-Damage-seq datasets and then pesudobulk the DNA damage signals.
+
+Here are some widely used softwares for these downstream analyses:
+- Seurat:
+- Scanpy:
+- SnapATAC2:
+- SEACell:
 
 
 
