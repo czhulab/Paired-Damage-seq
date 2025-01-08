@@ -1,6 +1,7 @@
 d=$1
 r=$2
 
+path_to_data="path-to-your-fastq-files"
 path_to_ref="path-to-the-prepared-cell-id-reference/"
 path_to_preproc="path-to-the-compiled-preproc/"
 path_to_reachtools="path-to-the-compiled-reachtools/"
