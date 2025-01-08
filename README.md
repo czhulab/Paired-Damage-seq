@@ -1,11 +1,11 @@
 Analysis of Paired-Damage-seq datasets
 =====
 
-Single-cell joint analysis of transcriptome with oxidative DNA damage and single-stranded DNA breaks.
+Paired-Damage-seq is a single-cell multiomics sequencing technique for joint analysis of transcriptome with oxidative DNA damage and single-stranded DNA breaks. Using paired transcriptome, we can perform computational "sorting" of cells and analyze the regions most frequently damaged across different cell types and states. Such selective genome vulnerability displays associations with loss of epigenetic memory over time, and could contribute to disease risks.
 
 ![R01_Fig5_Prelim_Damage-seq](https://github.com/user-attachments/assets/666bb112-70e0-49fa-85d8-736a6f13de9a)
 
-
+Paired-Damage-seq is a new member of the "Paired series" multiomics techniques. It is based on ligation-based combinatorial barcoding and requires customized codes to perform reads demultiplexing. Here are the code we used to perform the data pre-processing. If you are using different sets of barcodes sequences, you may need to prepare your own whitelist files.
 
 Preparation
 -----
@@ -23,7 +23,7 @@ For additional resources, please refer to: [Additional resources.](#additional-r
 
   <details>
 
-  <summary> Package Requirements </summary>
+  _**<summary> Package Requirements </summary>**_
    If you have previously set up the environment for analysis of [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master) or [SIMPLE-seq](https://github.com/cxzhu/SIMPLE-seq), you may not need to re-install all of them.
   
   Name | Link
@@ -79,7 +79,7 @@ fastqc Sample_1_R2.fq..gz
 
   <details>
 
-  <summary> Representative QC report from Paired-Tag dataset </summary>
+  _**<summary> Representative QC report from Paired-Tag dataset </summary>**_
   
   The image below shows the "Per base sequence content" and "Adapter Concent" sections of the FastQC output file from a representative Paired-Tag library.
   <img width="877" alt="image" src="https://github.com/user-attachments/assets/fcc61ff1-3f06-4452-bb2e-91734a7da8e4" />
@@ -117,7 +117,8 @@ sh per_run.sh ${DNA_ID} ${RNA_ID}
 For batch job submission, we prepared a simple perl script (```01.Preprocessing/01.submit_run.pl```) and an example sample table (```sample_list.txt```). Please modify [this line](https://github.com/czhulab/Paired-Damage-seq/blob/9fec3da3f4a80261b2281da11c3e20b433a914ff/01.Preprocessing/01.submit_run.pl#L12) with your batch submission script.
 
   <details>
-  <summary>The key output files after this step includes: </summary>
+    
+  _**<summary>The key output files after this step includes: </summary>**_
 
    > - ```01.rawdata/*combined_DNA.fq.gz```: Extracted barcode reads with DNA restriction cutting sites, which are derived from PAT tagmentation.
    > - ```01.rawdata/*combined_RNA.fq.gz```: Extracted barcode reads with RNA restriction cutting sites, which are derived from reverse transcription.
@@ -133,9 +134,30 @@ For batch job submission, we prepared a simple perl script (```01.Preprocessing/
 **Step 3.**  Pre-filtering, and merging matrices for sub-libraries.
 
 In Paired-Damage-seq, we will aliquote the barcoded nuclei into sub-libraries containing 2-10k cells for library preparation and sequencing. THe best approach is to QC & filtering sub-library pairs individually, and then merge them for downstream analyses.
-- The matrices files are in standard 10X format, you can use your own scripts to perform this task..
+- The matrices files are in standard 10X format, you can use your own scripts to perform this task.
 - This task can also be done with our previous [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master?tab=readme-ov-file#3-merge-sub-libraries-for-downstream-analysis) scripts.
 
+
+<details>
+    
+_**<summary> Filtering & merging matrices </summary>**_
+  
+We recommend to filter barcodes with low reads numbers before maerging sub-libraries. The same scripts in [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master?tab=readme-ov-file#3-merge-sub-libraries-for-downstream-analysis) are compatible with Paired-Damage-seq here.
+  
+- Count & plot reads counts using R: [plot_reads_numbers.R]([rscripts/plot_reads_numbers.R](https://github.com/cxzhu/Paired-Tag/blob/b2f367391aba77b17c833cb5671058ee397a19af/rscripts/plot_reads_numbers.R))
+
+  <img width="250" alt="image" src="https://github.com/user-attachments/assets/36ff403f-9b9d-4bb5-83cd-d8afba04c9e4" />
+- Filter matrices pairs using perl: perl [filt_mtx.pl](https://github.com/cxzhu/Paired-Tag/blob/b2f367391aba77b17c833cb5671058ee397a19af/perlscripts/filt_mtx.pl)
+  - Do not forget to modify the variables to specific files/prefix in the perl code.
+  - Metadata file is generated from the R code above.
+ 
+- Merge matrices using perl: perl [merge_mtx.pl](https://github.com/cxzhu/Paired-Tag/blob/b2f367391aba77b17c833cb5671058ee397a19af/perlscripts/merge_mtx.pl) merge_list.txt
+  - Example ```merge_list.txt``` format is annotated in the script.
+
+    <img width="350" alt="image" src="https://github.com/user-attachments/assets/4f21afd9-cb91-48ed-a838-d31108d92790" />
+    
+</details>
+  
 > [!CAUTION]
 > - When merging sub-libraries, always use unique prefix for each DNA-RNA library pairs.
 >    - The cells in different sub-libraries may have the same barcodes combinations.
@@ -143,14 +165,19 @@ In Paired-Damage-seq, we will aliquote the barcoded nuclei into sub-libraries co
 
 
 **Step 4.**  Downstreame analyses.
+
 We recommend to perform cell clustering on transcriptome profiles of Paired-Damage-seq datasets and then pesudobulk the DNA damage signals.
 
-Here are some widely used softwares for these downstream analyses:
-- Seurat:
-- Scanpy:
-- SnapATAC2:
-- SEACell:
+The computational tools for single-cell genomics are rapidly evoloving and it is not possible to list the best ones. Here are some of the softwares can be used for these downstream analyses including, but not limited to:
+- Seurat: https://satijalab.org/seurat/
+- Scanpy: https://scanpy.readthedocs.io/en/stable/
+- SnapATAC2: https://github.com/kaizhang/SnapATAC2
+- SEACell: https://github.com/dpeerlab/SEACells
 
+The code we used to produce the presented figures are organized in [HeLa cell data](https://github.com/czhulab/Paired-Damage-seq/tree/main/02.Analysis_HeLa) and [Mouse brain data](https://github.com/czhulab/Paired-Damage-seq/tree/main/03.Analysis_Brain). We do not have recommendations for specific versions of the packages and these codes and notebooks are for references only.
+> [!NOTE]
+> - Please check with the official documentations for the packages/softwares used in the above analysis.
+> - The paths to our original files were kept in these files for records. 
 
 
 Additional resources
