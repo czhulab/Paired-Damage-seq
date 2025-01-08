@@ -1,6 +1,10 @@
 d=$1
 r=$2
 
+path_to_ref="path-to-the-prepared-cell-id-reference/"
+path_to_preproc="path-to-the-compiled-preproc/"
+path_to_reachtools="path-to-the-compiled-reachtools/"
+
 ### create directories
 
 if [ ! -d "02.trimmed" ]; then
@@ -19,9 +23,9 @@ fi
 ### preproc DNA fastq file
 
 cd 01.rawdata
-../preproc combine_384plex ${d}
-zcat ${d}_combined_TN5.fq.gz | bowtie /gpfs/commons/groups/zhu_lab/czhu/genome_references/cell_id_384/Paired_Tag3_384_ID_ref - --norc -m 1 -v 1 -p 4 -S ${d}_BC.sam
-../preproc convert ${d}_BC.sam
+${path_to_preproc}/preproc combine_384plex ${d}
+zcat ${d}_combined_TN5.fq.gz | bowtie ${path_to_ref}/Paired_Tag3_384_ID_ref - --norc -m 1 -v 1 -p 4 -S ${d}_BC.sam
+${path_to_preproc}/preproc convert ${d}_BC.sam
 rm ${d}_BC.sam
 
 trim_galore ${d}_BC_cov.fq.gz
@@ -30,9 +34,9 @@ mv ${d}_BC_cov_trimmed.fq.gz ../02.trimmed/
 ### preproc RNA fastq file
 
 
-../preproc combine_384plex ${r}
-zcat ${r}_combined_RNA.fq.gz | bowtie /gpfs/commons/groups/zhu_lab/czhu/genome_references/cell_id_384/Paired_Tag3_384_ID_ref - --norc -m 1 -v 1 -p 4 -S ${r}_BC.sam
-../preproc convert ${r}_BC.sam
+${path_to_preproc}/preproc combine_384plex ${r}
+zcat ${r}_combined_RNA.fq.gz | bowtie ${path_to_ref}/Paired_Tag3_384_ID_ref - --norc -m 1 -v 1 -p 4 -S ${r}_BC.sam
+${path_to_preproc}/preproc convert ${r}_BC.sam
 rm ${r}_BC.sam
 
 trim_galore ${r}_BC_cov.fq.gz
@@ -46,7 +50,7 @@ bowtie2 -x /gpfs/commons/groups/zhu_lab/czhu/genome_references/mm10/mm10 -U ${d}
 samtools sort ${d}_mm10_bwt2.sam -o ${d}_mm10_bwt2_sorted.bam -@ 4
 rm ${d}_mm10_bwt2.sam
 
-../reachtools rmdup2 ${d}_mm10_bwt2_sorted.bam
+${path_to_reachtools}/reachtools rmdup2 ${d}_mm10_bwt2_sorted.bam
 mv ${d}_mm10_bwt2_sorted.bam ../03.mapping_mm10/
 mv ${d}_mm10_bwt2_sorted_rmdup.bam ../03.mapping_mm10/
 #
@@ -54,7 +58,7 @@ STAR  --runThreadN 4 --genomeDir /gpfs/commons/groups/zhu_lab/czhu/genome_refere
 #
 samtools view -h -F 256 ${r}_mm10_Aligned.out.bam -b > ${r}\_clean.bam
 samtools sort ${r}\_clean.bam -o ${r}_mm10_sorted.bam
-../reachtools rmdup2 ${r}_mm10_sorted.bam
+${path_to_reachtools}/reachtools rmdup2 ${r}_mm10_sorted.bam
 
 #mv ${r}_mm10_Aligned.out.bam ../03.mapping_mm10/
 mv ${r}\_clean.bam ../03.mapping_mm10/
@@ -63,7 +67,7 @@ mv ${r}_mm10_sorted_rmdup.bam ../03.mapping_mm10/
 
 cd ../03.mapping_mm10/
 
-../reachtools bam2Mtx2 ${r}_mm10_sorted_rmdup.bam /gpfs/commons/groups/zhu_lab/czhu/genome_references/annotations/mm10.annotation
+${path_to_reachtools}/reachtools bam2Mtx2 ${r}_mm10_sorted_rmdup.bam /gpfs/commons/groups/zhu_lab/czhu/genome_references/annotations/mm10.annotation
 
 mv ${r}*mtx2 ../04.matrices/
 
