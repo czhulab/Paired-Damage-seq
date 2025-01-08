@@ -191,9 +191,7 @@ Additional resources
   Please feel free to [contact us](https://czhulab.github.io/contact-us.html) if you have any questions or need anything else.
   
 
-<img width="150" alt="image" src="https://github.com/user-attachments/assets/66e848d8-b72f-423f-8b9c-1f9eda8038dd" />
-
-[Zhu Lab](https://czhulab.github.io/index.html) @ New York Genome Center & Weill Cornell Medicine
+[<img width="100" alt="image" src="https://github.com/user-attachments/assets/66e848d8-b72f-423f-8b9c-1f9eda8038dd"/>](https://czhulab.github.io/index.html) @ New York Genome Center & Weill Cornell Medicine
 
 
 
