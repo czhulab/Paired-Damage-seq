@@ -7,3 +7,5 @@ The codes used for analysis of Paired-Damage-seq are summarized into three parts
 - The codes for analysis of mouse brain Paired-Damage-seq datasets.
 
 The cell barcode reference and gene annotation reference (for generation of RNA count matrix) are also uploaded to the "resource" folder.
+
+We regularly maintain the step-by-step protocol in the "Protocol" folder.
