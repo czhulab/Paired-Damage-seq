@@ -1,10 +1,11 @@
 d=$1
 r=$2
 
-path_to_data="path-to-your-fastq-files"
-path_to_ref="path-to-the-prepared-cell-id-reference/"
-path_to_preproc="path-to-the-compiled-preproc/"
-path_to_reachtools="path-to-the-compiled-reachtools/"
+path_to_data="path-to-your-fastq-files-folder/"
+path_to_ref="path-to-the-prepared-cell-id-reference-folder/"
+path_to_preproc="path-to-the-compiled-preproc-folder/"
+path_to_reachtools="path-to-the-compiled-reachtools-folder/"
+path_to_gene_annotation_file="path-to-the-gene-annotation-file-from-resources/****.annotation"
 
 ### create directories
 
@@ -68,7 +69,7 @@ mv ${r}_mm10_sorted_rmdup.bam ../03.mapping_mm10/
 
 cd ../03.mapping_mm10/
 
-${path_to_reachtools}/reachtools bam2Mtx2 ${r}_mm10_sorted_rmdup.bam /gpfs/commons/groups/zhu_lab/czhu/genome_references/annotations/mm10.annotation
+${path_to_reachtools}/reachtools bam2Mtx2 ${r}_mm10_sorted_rmdup.bam ${path_to_gene_annotation_file}
 
 mv ${r}*mtx2 ../04.matrices/
 
