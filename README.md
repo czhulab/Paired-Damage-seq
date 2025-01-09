@@ -3,27 +3,27 @@ Analysis of Paired-Damage-seq datasets
 
 Paired-Damage-seq is a single-cell multiomics sequencing technique for joint analysis of transcriptome with oxidative DNA damage and single-stranded DNA breaks.
 
-Using paired transcriptome, we can perform computational "sorting" of cells and analyze the regions most frequently damaged across different cell types and states. Such selective genome vulnerability displays associations with loss of epigenetic memory over time, and could contribute to disease risks.
+Based on _in situ_ labeling with the "base excision repair" proteins, damaged DNA sites, including 8-oxoG, AP sites, nicks and gaps, can be labelled with biotinylated dUTP and enabled the downstream targeted tagmentation with anti-biotin antibodies and protein A-Tn5 fusion protein. As a new member of the "Paired series" multiomics techniques, Paired-Damage-seq is also based on ligation-based combinatorial barcoding (first introduced by [SPLiT-seq](https://www.science.org/doi/10.1126/science.aam8999)), offering ultra-high-throughput, cost-effective, single-cell indexing without the requirements for specific instruments.
 
 <img width="1000" alt="image" src="https://github.com/user-attachments/assets/1a73d64f-63fd-4e24-8059-a5051a2056a3" />
 
-Paired-Damage-seq is a new member of the "Paired series" multiomics techniques. It is based on ligation-based combinatorial barcoding and requires customized codes to perform reads demultiplexing.
+Using paired transcriptome, we can perform computational "sorting" of cells and analyze the regions most frequently damaged across different cell types and states. Such selective genome vulnerability displays associations with loss of epigenetic memory over time, and could contribute to disease risks.
 
-Here are the code we used to perform the data pre-processing. If you are using different sets of barcodes sequences, you may need to prepare your own whitelist files.
+We used customized barcodes designs and the codes here are specifically for pre-processing of Paired-Damage-seq datasets. If you are using different sets of barcodes sequences, you may need to prepare your own barcode whitelist files.
 
 Preparation
 -----
-The codes and whitelist files used for analysis of Paired-Damage-seq were organized into four parts.
+The codes and barcodes whitelist files used for analysis of Paired-Damage-seq were organized into four parts.
 - The [pre-processing pipeline](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing) to extract cell barcodes, map to reference genome, and generate RNA cell-to-gene count matrix.
 - The codes for [analysis of HeLa Paired-Damage-seq datasets](https://github.com/czhulab/Paired-Damage-seq/tree/main/02.Analysis_HeLa).
 - The codes for [analysis of mouse brain Paired-Damage-seq datasets](https://github.com/czhulab/Paired-Damage-seq/tree/main/03.Analysis_Brain).
 - The [cell barcode reference and gene annotation reference](https://github.com/czhulab/Paired-Damage-seq/tree/main/resources) (for generation of RNA count matrix) are also uploaded to the "resource" folder.
 
-For additional resources, please refer to: [Additional resources.](#additional-resources)
+For additional resources, please find: [Additional resources.](#additional-resources)
 
 
-> [!TIP]
-> Please have the following softwares installed before running the preprocessing pipelines.
+> [!NOTE]
+> Please have the following softwares installed before running the preprocessing pipeline.
 
   <details>
 
@@ -39,7 +39,7 @@ For additional resources, please refer to: [Additional resources.](#additional-r
   Trim_galore | https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
   FastQC (Optional) | https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
   > - Generally we do not limit to specific versions of the above softwares, as long as the parameters format in bash scripts here match with the installed versions.
-  > - An updated GCC complier is also required. 
+  > - An updated GCC complier is required. 
   </details>
 
 A customized code was prepared for extracting & converting the cell barcodes from the "Paired" series datasets. To compile the code, plesae follow the following steps:
@@ -66,14 +66,14 @@ bowtie-build ./Paired_Tag3_384_ID_ref.fa ./Paired_Tag3_384_ID_ref
 
 
 > [!IMPORTANT]
-> - We have updated the length and numbers of combinations of barcodes for the split-and-pool ligation, which is different from Paired-Tag (2021). A [preproc](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/preproc) tool is provided for correctly extracting the cellular barcodes.
+> - We have updated the length and numbers of barcode combinations for the split-and-pool ligation, which is different from [SPLiT-seq](https://www.science.org/doi/10.1126/science.aam8999)) and Paired-Tag (2021). A [preproc](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/preproc) tool is provided for correctly extracting the cellular barcodes.
 > - The [reachtools](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/reachtools) is only used for generating cell-to-genes/bins count matrices. 
 
 Pre-processing of Paired-Damage-seq datasets
 ---
 **Step 1.**  Initial QC (_Optional_).
 
-Similar to the other combinatorial barcoding-based "Paired" series datasets, a quick initial QC can be done will FastQC software. FastQC will give a QC summary for several key quality metrics of fastq files generated from Illumina bcl2fastq program. The key metrics are similar to the previous Paired-Tag datasets.
+Similar to the other combinatorial barcoding-based "Paired series" datasets, a quick QC can be done with FastQC software. FastQC will give the summary for several key quality metrics of fastq files generated from Illumina bcl2fastq program. The key metrics are similar to the previous Paired-Tag datasets.
 
 ```bash
 # If installed fastQC software.
@@ -83,7 +83,7 @@ fastqc Sample_1_R2.fq..gz
 
   <details>
 
-  _**<summary> Representative QC report from Paired-Tag dataset </summary>**_
+  _**<summary> Representative FastQC report from Paired-Tag dataset </summary>**_
   
   The image below shows the "Per base sequence content" and "Adapter Concent" sections of the FastQC output file from a representative Paired-Tag library.
   <img width="877" alt="image" src="https://github.com/user-attachments/assets/fcc61ff1-3f06-4452-bb2e-91734a7da8e4" />
@@ -97,9 +97,9 @@ fastqc Sample_1_R2.fq..gz
      - In DNA library: tagmentation efficiency (antibody efficiency) are low, may expect low library complexity.
   </details>
 
-**Step 2.**  Barcodes extration, mapping, and matrix generation.
+**Step 2.**  Barcodes extraction, mapping, and matrix generation.
 
-During this step, the shell scripts will perform barcodes extraction, reads cleaning & mapping, PCR duplicates removal, and generating the cell-counts matrix with the environment prepared in [Preparation](#preparation) section.
+During this step, the shell script will perform barcodes extraction, reads cleaning & mapping, PCR duplicates removal, and generating the cell-counts matrix with the environment prepared in [Preparation](#preparation) section.
 > [!IMPORTANT]
 > - Don't forget to update the your paths to ```fastq files```, ```barcode references```, ```genome_reference``` ,```preprocessing```, ```reachtools``` folders, and ```gene_annotation``` file in the "01.Preprocessing/per_run.sh" bash script.
 > - Cell barcodes whitelist ```barcode references```, and ```gene_annotation``` for mm10 and hg38 are available in "resources" folder.
@@ -137,9 +137,9 @@ For batch job submission, we prepared a simple perl script (```01.Preprocessing/
 
 **Step 3.**  Pre-filtering, and merging matrices for sub-libraries.
 
-In Paired-Damage-seq, we will aliquote the barcoded nuclei into sub-libraries containing 2-10k cells for library preparation and sequencing. THe best approach is to QC & filtering sub-library pairs individually, and then merge them for downstream analyses.
+In Paired-Damage-seq, we will aliquote the barcoded nuclei into sub-libraries containing 2-10k cells for library preparation and sequencing. The best approach is to QC & filtering sub-library pairs individually, and then merge them for downstream analyses.
 - The matrices files are in standard 10X format, you can use your own scripts to perform this task.
-- This task can also be done with our previous [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master?tab=readme-ov-file#3-merge-sub-libraries-for-downstream-analysis) scripts.
+- You can also use our previous [Paired-Tag](https://github.com/cxzhu/Paired-Tag/tree/master?tab=readme-ov-file#3-merge-sub-libraries-for-downstream-analysis) scripts for this step.
 
 
 <details>
@@ -163,39 +163,44 @@ We recommend to filter barcodes with low reads numbers before maerging sub-libra
 </details>
   
 > [!CAUTION]
-> - When merging sub-libraries, always use unique prefix for each DNA-RNA library pairs.
->    - The cells in different sub-libraries may have the same barcodes combinations.
->   - The PCR index will be used as the 4th barcode combination to give sufficient #s of barcodes.
+> - When merging sub-libraries, always use **unique prefix** for each DNA-RNA library pairs.
+>   - The cells in different sub-libraries may have the same barcodes combinations (BC#1:#2:#3). Merging them without adding sub-library pair-specific prefix (BC#4) may results in barcodes conflicts.
+>   - The PCR index will be used as the 4th barcode combination (adding BC#4 -> BC#1:#2:#3:#4) to give sufficient #s of barcodes.
 
 
-**Step 4.**  Downstreame analyses.
+**Step 4.**  Downstream analyses.
 
 We recommend to perform cell clustering on transcriptome profiles of Paired-Damage-seq datasets and then pesudobulk the DNA damage signals.
 
-The computational tools for single-cell genomics are rapidly evoloving and it is not possible to list the best ones. Here are some of the softwares can be used for these downstream analyses including, but not limited to:
+The computational tools for single-cell genomics are rapidly evoloving and it is impossible to recommend the best ones. Here are some of the softwares we used for these downstream analyses:
 - Seurat: https://satijalab.org/seurat/
 - Scanpy: https://scanpy.readthedocs.io/en/stable/
 - SnapATAC2: https://github.com/kaizhang/SnapATAC2
 - SEACell: https://github.com/dpeerlab/SEACells
 
-The code we used to produce the presented figures are organized in [HeLa cell data](https://github.com/czhulab/Paired-Damage-seq/tree/main/02.Analysis_HeLa) and [Mouse brain data](https://github.com/czhulab/Paired-Damage-seq/tree/main/03.Analysis_Brain). We do not have recommendations for specific versions of the packages and these codes and notebooks are for references only.
+The code we used to produce the presented figures are deposited to [HeLa cell data](https://github.com/czhulab/Paired-Damage-seq/tree/main/02.Analysis_HeLa) and [Mouse brain data](https://github.com/czhulab/Paired-Damage-seq/tree/main/03.Analysis_Brain). We do not have recommendations for specific versions of the packages and these codes and notebooks are for reference purpose only.
 > [!NOTE]
 > - Please check with the official documentations for the packages/softwares used in the above analysis.
-> - The paths to our original files were kept in these files for records. 
+> - The paths to our original files were kept for record purpose. 
 
 
 Additional resources
 -----
   
-  If you are interested in applying Paired-Damage-seq technique or interested in Paired-Damage-seq dataset, here are the links for some useful resources:
+  If you are interested in applying our methods or datasets, here are the links for some useful resources:
   - Read out publication: [Coming soon!]()
   - Downloada the dataset: [GSE268567](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268567)
   - We regularly maintain the step-by-step protocol: [here](Protocol/Protocol_Paired-Damage-seq_Jan2025.pdf).
+  - Our other techniques:
+    - Paired-seq: [Paper](https://www.nature.com/articles/s41594-019-0323-x), [Protocol](https://link.springer.com/protocol/10.1007/978-1-0716-2899-7_10), [Codes](https://github.com/cxzhu/Paired-seq), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4874906)
+    - Paired-Tag: [Paper](https://www.nature.com/articles/s41592-021-01060-3), [Protocol](https://github.com/cxzhu/Paired-Tag/tree/master/protocol), [Codes](https://github.com/cxzhu/Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152020)
+    - Droplet Paired-Tag: [Paper](https://www.nature.com/articles/s41594-023-01060-1), [Protocol](https://protocolexchange.researchsquare.com/article/pex-2310/v1), [Codes](https://github.com/Xieeeee/Droplet-Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156683)
+    - SIMPLE-seq: [Paper](https://www.nature.com/articles/s41587-024-02148-9), [Protocol](https://github.com/cxzhu/SIMPLE-seq/tree/main/Protocol), [Codes](https://github.com/cxzhu/SIMPLE-seq), [Data](https://www.ncbi.xyz/geo/browse/?view=samples&series=197740)
   
   Please feel free to [contact us](https://czhulab.github.io/contact-us.html) if you have any questions or need anything else.
   
 
-[<img width="100" alt="image" src="https://github.com/user-attachments/assets/66e848d8-b72f-423f-8b9c-1f9eda8038dd"/>](https://czhulab.github.io/index.html) @ New York Genome Center & Weill Cornell Medicine
+[<img width="85" alt="image" src="https://github.com/user-attachments/assets/66e848d8-b72f-423f-8b9c-1f9eda8038dd"/>](https://czhulab.github.io/index.html) @ New York Genome Center & Weill Cornell Medicine
 
 
 
