@@ -5,7 +5,9 @@ Paired-Damage-seq is a single-cell multiomics sequencing technique for joint ana
 
 Using paired transcriptome, we can perform computational "sorting" of cells and analyze the regions most frequently damaged across different cell types and states. Such selective genome vulnerability displays associations with loss of epigenetic memory over time, and could contribute to disease risks.
 
-![R01_Fig5_Prelim_Damage-seq](https://github.com/user-attachments/assets/666bb112-70e0-49fa-85d8-736a6f13de9a)
+<img width="450" alt="image" src="(https://github.com/user-attachments/assets/0bd540c7-38b5-412b-a5c6-fb98a1b75ac2)" />
+
+
 
 Paired-Damage-seq is a new member of the "Paired series" multiomics techniques. It is based on ligation-based combinatorial barcoding and requires customized codes to perform reads demultiplexing.
 
