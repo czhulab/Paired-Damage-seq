@@ -7,6 +7,7 @@ Using paired transcriptome, we can perform computational "sorting" of cells and 
 
 <img width="450" alt="image" src="(https://github.com/user-attachments/assets/0bd540c7-38b5-412b-a5c6-fb98a1b75ac2)" />
 
+![Schematics_Damage-seq](https://github.com/user-attachments/assets/1a73d64f-63fd-4e24-8059-a5051a2056a3)
 
 
 Paired-Damage-seq is a new member of the "Paired series" multiomics techniques. It is based on ligation-based combinatorial barcoding and requires customized codes to perform reads demultiplexing.
