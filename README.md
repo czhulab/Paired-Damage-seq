@@ -164,8 +164,8 @@ We recommend to filter barcodes with low reads numbers before maerging sub-libra
   
 > [!CAUTION]
 > - When merging sub-libraries, always use **unique prefix** for each DNA-RNA library pairs.
->   - The cells in different sub-libraries may have the same barcodes combinations (BC#1:#2:#3). Merging them without adding sub-library pair-specific prefix (BC#4) may results in barcodes conflicts.
->   - The PCR index will be used as the 4th barcode combination (adding BC#4 -> BC#1:#2:#3:#4) to give sufficient #s of barcodes.
+>   - The cells in different sub-libraries may have the same barcodes combinations (BC#3:#2:#1). Merging them without adding sub-library pair-specific prefix (BC#4) may results in barcodes conflicts.
+>   - The PCR index will be used as the 4th barcode combination (adding BC#4 -> BC#4:#3:#2:#1) to give sufficient #s of barcodes.
 
 
 **Step 4.**  Downstream analyses.
@@ -191,11 +191,18 @@ Additional resources
   - Read out publication: [Coming soon!]()
   - Downloada the dataset: [GSE268567](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268567)
   - We regularly maintain the step-by-step protocol: [here](Protocol/Protocol_Paired-Damage-seq_Jan2025.pdf).
-  - Our other techniques:
-    - Paired-seq: [Paper](https://www.nature.com/articles/s41594-019-0323-x), [Protocol](https://link.springer.com/protocol/10.1007/978-1-0716-2899-7_10), [Codes](https://github.com/cxzhu/Paired-seq), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4874906)
-    - Paired-Tag: [Paper](https://www.nature.com/articles/s41592-021-01060-3), [Protocol](https://github.com/cxzhu/Paired-Tag/tree/master/protocol), [Codes](https://github.com/cxzhu/Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152020)
-    - Droplet Paired-Tag: [Paper](https://www.nature.com/articles/s41594-023-01060-1), [Protocol](https://protocolexchange.researchsquare.com/article/pex-2310/v1), [Codes](https://github.com/Xieeeee/Droplet-Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156683)
-    - SIMPLE-seq: [Paper](https://www.nature.com/articles/s41587-024-02148-9), [Protocol](https://github.com/cxzhu/SIMPLE-seq/tree/main/Protocol), [Codes](https://github.com/cxzhu/SIMPLE-seq), [Data](https://www.ncbi.xyz/geo/browse/?view=samples&series=197740)
+
+<details>
+  
+  _**<summary>Our other techniques: </summary>**_
+  
+  - Paired-seq: [Paper](https://www.nature.com/articles/s41594-019-0323-x), [Protocol](https://link.springer.com/protocol/10.1007/978-1-0716-2899-7_10), [Codes](https://github.com/cxzhu/Paired-seq), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4874906)
+  - Paired-Tag: [Paper](https://www.nature.com/articles/s41592-021-01060-3), [Protocol](https://github.com/cxzhu/Paired-Tag/tree/master/protocol), [Codes](https://github.com/cxzhu/Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152020)
+  - Droplet Paired-Tag: [Paper](https://www.nature.com/articles/s41594-023-01060-1), [Protocol](https://protocolexchange.researchsquare.com/article/pex-2310/v1), [Codes](https://github.com/Xieeeee/Droplet-Paired-Tag), [Data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156683)
+  - SIMPLE-seq: [Paper](https://www.nature.com/articles/s41587-024-02148-9), [Protocol](https://github.com/cxzhu/SIMPLE-seq/tree/main/Protocol), [Codes](https://github.com/cxzhu/SIMPLE-seq), [Data](https://www.ncbi.xyz/geo/browse/?view=samples&series=197740)
+    
+</details>
+
   
   Please feel free to [contact us](https://czhulab.github.io/contact-us.html) if you have any questions or need anything else.
   
