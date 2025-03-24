@@ -66,7 +66,7 @@ bowtie-build ./Paired_Tag3_384_ID_ref.fa ./Paired_Tag3_384_ID_ref
 
 
 > [!IMPORTANT]
-> - We have updated the length and numbers of barcode combinations for the split-and-pool ligation, which is different from [SPLiT-seq](https://www.science.org/doi/10.1126/science.aam8999)) and Paired-Tag (2021). A [preproc](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/preproc) tool is provided for correctly extracting the cellular barcodes.
+> - We have updated the length and numbers of barcode combinations for the split-and-pool ligation, which is different from [SPLiT-seq](https://www.science.org/doi/10.1126/science.aam8999) and Paired-Tag (2021). A [preproc](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/preproc) tool is provided for correctly extracting the cellular barcodes.
 > - The [reachtools](https://github.com/czhulab/Paired-Damage-seq/tree/main/01.Preprocessing/reachtools) is only used for generating cell-to-genes/bins count matrices. 
 
 Pre-processing of Paired-Damage-seq datasets
