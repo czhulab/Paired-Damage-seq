@@ -188,7 +188,7 @@ Additional resources
 -----
   
   If you are interested in applying our methods or datasets, here are the links for some useful resources:
-  - Read out publication: [Coming soon!](https://www.nature.com/articles/s41592-025-02632-3)
+  - Read out publication: [Paper](https://www.nature.com/articles/s41592-025-02632-3)
   - Download the dataset: [GSE268567](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268567)
   - We regularly maintain the step-by-step protocol: [here](Protocol/Protocol_Paired-Damage-seq_Jan2025.pdf).
 
